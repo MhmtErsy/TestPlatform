@@ -1,0 +1,93 @@
+﻿@model TP.Entities.Job_Adv
+@using TP.Entities
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h3>Bu ilanı silmek istediğinizden emin misiniz?</h3>
+        <div>
+            <h4>@Model.job_adv_title</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.job_adv_title)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.job_adv_title)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.job_adv)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.job_adv)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.confirmation)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.confirmation)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.isPublished)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.isPublished)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.publishDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.publishDate)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.awardScoreValue)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.awardScoreValue)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions no-color">
+                    <input type="submit" value="Delete" class="btn btn-danger" /> 
+                </div>
+            }
+        </div>
+    </div>
+</div>

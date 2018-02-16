@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TP.Entities.Job_Adv>
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Başvurularım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2><span class="glyphicon glyphicon-paperclip"></span> @ViewBag.Title</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.job_adv_title)
+                </th>
+                <th>
+                    @Html.DisplayName("Müşteri")
+                </th>
+                <th>
+                    @Html.DisplayName("İşlemler")
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.job_adv_title)
+                    </td>
+                    <td>
+                        <b><a href="/Home/ShowCustomerProfile/@item.adv_customer.UserId">@Html.DisplayName(item.adv_customer.user_name + " " + item.adv_customer.user_surname)</a></b>
+                    </td>
+                    <td>
+                        @Bootstrap.LinkButton("/Job_Adv/Details/" + @item.JobAdvId, "info", "btn-xs", "Detaylar", "info-sign", "Detaylar")
+
+                        @if (Session["login"] is Test_Master)
+                        {
+
+                            if (item.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() == null)
+                            {
+                                @Bootstrap.LinkButton("/Job_Adv/Apply/" + @item.JobAdvId, "info", "btn-xs", "Başvuru", "leaf", "Başvuru Yap");
+                            }
+                            if (item.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() != null)
+                            {
+                                @Bootstrap.LinkButton("/Job_Adv/ApplyCancel/" + @item.JobAdvId, "warning", "btn-xs", "Başvuru İptal", "leaf", "Başvuruyu İptal Et");
+                            }
+
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+</div>

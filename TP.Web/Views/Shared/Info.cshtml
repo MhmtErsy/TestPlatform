@@ -1,0 +1,74 @@
+﻿@using TP.Web.ViewModels
+@model InfoViewModel
+@{
+    ViewBag.Title = Model.Title;
+}
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet'
+      type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300,800'
+      rel='stylesheet' type='text/css' />
+<!-- ============ Add custom CSS here ============ -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+
+
+<div class="container">
+    <div class="text-center">
+        <div id="banner" style="background-image:none;">
+            <div class="text-info">
+                <h1>
+                    <span class="glyphicon glyphicon-info-sign"></span><strong>@Model.Title</strong><br />
+                    @Model.Header
+                </h1>
+            </div>
+            <h1>
+                @foreach (string msg in Model.Items)
+                {
+                    @msg<br>
+                }
+            </h1>
+            <h5><strong>testplatform.com</strong></h5><br />
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery.backstretch.js"></script>
+<script src="~/Scripts/afterlogout_navs.js"></script>
+@{
+    string js = string.Empty;
+    if (Model.IsRedirecting)
+    {
+        js = "setTimeout(function () { window.location = '" + Model.RedirectingUrl + "';  }," + Model.RedirectingTimeout + ");";
+    }
+}
+<script type="text/javascript">
+    $(function () {
+        
+        @Html.Raw(js)
+    });
+</script>
+<script type="text/javascript">
+    'use strict';
+
+    /* ========================== */
+    /* ::::::: Backstrech ::::::: */
+    /* ========================== */
+    // You may also attach Backstretch to a block-level element
+    $.backstretch(
+        [
+            "/img/44.jpg",
+            "/img/colorful.jpg",
+            "/img/34.jpg",
+            "/img/images.jpg"
+        ],
+
+        {
+            duration: 4500,
+            fade: 1500
+        }
+    );
+</script>
+
+
+

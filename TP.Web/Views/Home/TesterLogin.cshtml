@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Tester Login";
+}
+@using TP.Entities.ValueObjects.LoginViewModels
+@model TesterLoginViewModel
+@{
+    ViewBag.Title = "Test Platform - Tester Giriş Sayfası";
+}
+<link href="~/Content/login-page.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-6">
+            <div class="registrationform">
+                    <fieldset>
+                        <legend>Tester Giriş<i class="fa fa-pencil pull-right"></i></legend>
+                       @using (Html.BeginForm())
+                       {
+                        @Html.ValidationSummary(false)
+
+                           if (ViewBag.SetLink != null)
+                           {
+                            <a href="@ViewBag.SetLink" class="btn btn-primary" style="margin-left: 40px;margin-bottom: 10px;">  Aktivasyon Maili Gönder</a>
+                           }
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label">
+                                E-Mail
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.email, new { @class = "form-control", placeholder = "E-Posta", required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSurname" class="col-lg-2 control-label">
+                                Parola
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Parola", required = "required",type="password" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Giriş Yap
+                                </button>
+                                <button type="reset" class="btn btn-warning">
+                                    Reset
+                                </button><br /><br />
+                                Henüz Kaydolmadınız mı? <a href="/Home/TesterRegister">Buradan Kaydolun</a>
+                            </div>
+                        </div>
+                       }
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+</div>
+<script src="~/Scripts/afterlogout_navs.js"></script>
+

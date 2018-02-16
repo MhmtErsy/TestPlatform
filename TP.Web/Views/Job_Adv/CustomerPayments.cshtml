@@ -1,0 +1,69 @@
+﻿@model List<TP.Entities.Payment>
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Yapılacak ödemeler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2>@ViewBag.Title</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Test Master")
+                </th>
+                <th>
+                    @Html.DisplayName("Görev")
+                </th>
+                <th>
+                    @Html.DisplayName("Miktar (₺)")
+                </th>
+                <th>
+                    @Html.DisplayName("Kazanılan tarih")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="/Job_Adv/LookTestMasterProfile/@item.pay_user.UserId">@Html.DisplayName(item.pay_user.user_name + " " + item.pay_user.user_surname)</a>   
+                    </td>
+                    <td>
+                        <a href="/Job_Adv/Details/@item.JobAdvId">@Html.DisplayFor(modelItem => item.Job_Adv.job_adv_title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payDate)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+C:\Users\mehme\source\repos\TPSolution\TP.Common\bin\Debug\TP.Common.dll
+C:\Users\mehme\source\repos\TPSolution\TP.Common\bin\Debug\TP.Common.pdb
+C:\Users\mehme\source\repos\TPSolution\TP.Common\obj\Debug\TP.Common.csproj.CoreCompileInputs.cache
+C:\Users\mehme\source\repos\TPSolution\TP.Common\obj\Debug\TP.Common.dll
+C:\Users\mehme\source\repos\TPSolution\TP.Common\obj\Debug\TP.Common.pdb
+C:\Users\mehme\source\repos\TPSolution\TP.Common\obj\Debug\TP.Common.csprojResolveAssemblyReference.cache

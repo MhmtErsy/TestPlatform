@@ -1,0 +1,71 @@
+﻿@model IEnumerable<TP.Entities.Test_Job>
+    @using TP.Entities
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-3">
+        @if (Session["login"] is Test_Master)
+        {
+        @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if(Session["login"] is Tester)
+        {
+        @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+        @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+        @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-9 col-md-pull-1">
+
+        <h2>Görevler</h2>
+        <div class="form-horizontal">
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayName("Use Case Başlığı")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Başlangıç Tarihi")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Görevli Test Master")
+                    </th>
+                    <th>
+                        @Html.DisplayName("İşlem")
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.test_job_title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.start_date)
+                        </td>
+                        <td>
+                            <a href="/Job_Adv/LookTestMasterProfile/@item.job_test_master.UserId">@Html.DisplayName(item.job_test_master.user_name + " " + item.job_test_master.user_surname)</a>
+                        </td>
+                        <td>
+                            @Bootstrap.LinkButton("/Job_Adv/Details/" + item.JobAdvId, "info", "btn-xs", "Detaylar", "leaf", " İş Detayları")
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        </div>
+    </div>

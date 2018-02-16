@@ -1,0 +1,169 @@
+﻿@model TP.Entities.Job_Adv
+@using TP.Entities
+@using TP.BusinessLayer.JobManagers
+
+@{
+    ViewBag.Title = "Detaylar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid">
+
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2><b>@Model.job_adv_title</b></h2>
+        <hr />
+
+        <div class="col-md-12">
+            <p>
+                @if (Session["login"] is Test_Master)
+                {
+                    @Bootstrap.LinkButton("/Job_Adv/Index/" + Model.JobAdvId, "success", "btn-md", "İlanlarım Listesine Git", "arrow-left", "İlanlar Listesine Git")
+                    if (Model.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() == null && Model.SelectedTestMaster == null)
+                    {
+                        @Bootstrap.LinkButton("/Job_Adv/Apply/" + Model.JobAdvId, "info", "btn-md", "Başvuru", "leaf", " Başvuru Yap");
+                    }
+
+                    if (Model.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() != null)
+                    {
+                        @Bootstrap.LinkButton("/Job_Adv/ApplyCancel/" + Model.JobAdvId, "warning", "btn-md", "Başvuru İptal", "leaf", " Başvuruyu İptal Et");
+                    }
+
+                }
+
+
+                @if (Model.adv_customer == (Session["login"] as Customer))
+                {
+                    @Bootstrap.LinkButton("/Job_Adv/Edit/" + Model.JobAdvId, "warning", "btn-md", "Düzenle", "edit", " Düzenle")
+                    if (Model.Applicants.Count != 0)
+                    {
+                        @Bootstrap.LinkButton("/Job_Adv/Applicants/" + Model.JobAdvId, "info", "btn-md", "Başvuruları Görüntüle", "user", " Başvuruları Görüntüle")
+                    }
+
+                    if (Model.SelectedTestMaster != null)
+                    {
+
+                        ReportManager RM = new ReportManager();
+                        @Bootstrap.LinkButton("/Job_Adv/RemoveSelectedTestMaster/" + Model.JobAdvId, "danger", "btn-md", "Test Master Kaldır", "user", " Görevli Test Master'ı Çıkar( " + Model.SelectedTestMaster.user_name + " " + Model.SelectedTestMaster.user_surname + " )")
+                        if (RM.Find(x=>x.Test_Job.JobAdvId==Model.JobAdvId)!=null)
+                        {
+                           @Bootstrap.LinkButton("/Job_Adv/ShowReport/" + Model.JobAdvId, "info", "btn-md", "Raporu Oku", "book", " Raporu Oku")
+                        }
+
+                       
+                    }
+                }
+                @{TestJobManager tjm = new TestJobManager();
+                    Test_Job tj = tjm.Find(x => x.Job_Adv.JobAdvId == Model.JobAdvId); }
+                @if (Session["login"] is Test_Master && Model.SelectedTestMaster != null && Model.SelectedTestMaster.UserId == (Session["login"] as Test_Master).UserId || Session["login"] is Admin)
+                {
+
+                    if (tj == null && !(Session["login"] is Admin))
+                    {
+                        @Bootstrap.LinkButton("/Test_Job/Create/" + Model.JobAdvId, "info", "btn-md", "Kullanım Senaryosu Oluştur", "plus", " Kullanım Senaryosu Oluştur");
+                    }
+                    if(tj!=null)
+                    {
+                        @Bootstrap.LinkButton("/Test_Job/Details/" + Model.JobAdvId, "info", "btn-md", "Kullanım Senaryosunu Görüntüle", "leaf", " Kullanım Senaryosunu Görüntüle")
+                    }
+                     
+                    @Bootstrap.LinkButton("/Test_Job/EmployTesterForJob/" + Model.JobAdvId, "info", "btn-md", "Testerları Görüntüle", "user", " Testerları Görüntüle")
+                    
+                }
+                @if (Session["login"] is Tester && tj != null)
+                {
+                    @Bootstrap.LinkButton("/Test_Job/Details/" + Model.JobAdvId, "info", "btn-md", "Kullanım Senaryosunu Görüntüle", "leaf", " Kullanım Senaryosunu Görüntüle")
+                }
+
+            </p>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("İlan Resmi: ")
+                </dt>
+                <dd>
+                    @if (Model.adv_picturepath != null)
+                    {
+                        <img src="/Images/Adv_Images/@Model.adv_picturepath" alt="@Model.job_adv_title" style="height:500px;width:800px" class="form-control"><br />
+                    }
+                    else
+                    {
+                        <img src="~/Images/Adv_Images/adv_def.jpg" alt="@Model.job_adv_title" style="height:400px;width:400px" class="form-control"><br />
+                    }
+                </dd>
+
+                <dt>
+                    <br />
+                    @Html.DisplayNameFor(model => model.job_adv)
+                </dt>
+                <dd>
+                    <br />
+                    @Html.TextAreaFor(model => model.job_adv, 20, 30, new { @class = "form-control", @readonly = "readonly", @style = "resize:none" })
+                </dd>
+
+                <dt>
+                    <br />
+                    @Html.DisplayNameFor(model => model.publishDate)
+                </dt>
+                <dd>
+                    <br />
+                    @Html.DisplayFor(model => model.publishDate)
+                </dd>
+
+                <dt><br />
+                   @Html.DisplayNameFor(model => model.finishDate)
+                </dt>
+                <dd>
+                    <br />
+                    @Html.DisplayFor(model => model.finishDate)
+                </dd>
+                <dt>
+                    <br />
+                    @Html.DisplayNameFor(model => model.awardScoreValue)
+                </dt>
+                <dd>
+                    <br />
+                    @Html.DisplayFor(model => model.awardScoreValue)
+                </dd>
+                <dt>
+                    <br />
+                    @Html.DisplayName("Görevli Test Master")
+                </dt>
+                <dd>
+                    <br />
+                    @if (Model.SelectedTestMaster != null)
+                    {
+                        <a href="/Job_Adv/LookTestMasterProfile/@Model.SelectedTestMaster.UserId">@Model.SelectedTestMaster.user_name @Model.SelectedTestMaster.user_surname</a>
+                    }
+                    else
+                    {
+                        @Html.DisplayName("- Yok -")
+                    }
+
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,107 @@
+﻿@model List<TP.Entities.Job_Adv>
+@using TP.Entities
+
+@{
+    ViewBag.Title = "MyJobs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+        </div>
+    <div class="col-md-10">
+        <h2><span class="glyphicon glyphicon-copy"></span> İş İlanlarım</h2>
+        <hr />
+        <p>
+            @Bootstrap.LinkButton("/Home/Index/", "info", "btn-md", "Anasayfa", "arrow-left", " Anasayfa")
+            @Bootstrap.LinkButton("/Job_Adv/Create/", "success", "btn-md", "Yeni İlan Oluştur", "plus", " Yeni İlan Oluştur")
+        </p>
+        <table class="table table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayName("Başlık")
+                </th>
+                <th>
+                    @Html.DisplayName("Onay")
+                </th>
+                <th>
+                    @Html.DisplayName("Yayın Durumu")
+                </th>
+                <th>
+                    @Html.DisplayName("Yayın Tarihi")
+                </th>
+                <th>
+                    @Html.DisplayName("İşlemler")
+                </th>
+            </tr>
+            @if (Session["login"] is Customer && (Session["login"] as Customer).JobAnnouncement != null)
+            {
+
+
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.job_adv_title, "Details/" + item.JobAdvId)
+
+                        </td>
+                        <td>
+                            @switch (item.confirmation)
+                    {
+                        case false:
+                                    <b style="color:red">@Html.DisplayName("Onaylanmadı")</b>
+                                    break;
+                                case true:
+                                    @Html.DisplayName("Onaylandı");
+                            break;
+                        default:
+                            break;
+                    }
+
+                        </td>
+                        <td>
+                            @switch (item.isPublished)
+                    {
+                        case false:
+                                    <b style="color:red">@Html.DisplayName("Yayınlanmadı")</b>
+                                    break;
+                                case true:
+                                    @Html.DisplayName("Yayınlandı");
+                            break;
+                        default:
+                            break;
+                    }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.publishDate)
+                        </td>
+                        <td>
+                            @Bootstrap.LinkButton("/Job_Adv/Edit/" + @item.JobAdvId, "warning", "btn-xs", "Düzenle", "edit", " Düzenle")
+                            @Bootstrap.LinkButton("/Job_Adv/Delete/" + @item.JobAdvId, "danger", "btn-xs", "Kaldır", "trash", " Kaldır")
+                            @Bootstrap.LinkButton("/Job_Adv/Details/" + @item.JobAdvId, "info", "btn-xs", "Detaylar", "info-sign", " Detaylar")
+                        </td>
+                    </tr>
+                }
+
+
+            }
+        </table>
+
+    </div>
+    </div>

@@ -1,0 +1,52 @@
+﻿@using TP.Entities
+@model Test_Master
+@{
+    ViewBag.Title = "Profil";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+        <div class="col-md-3">
+            <img src="~/Images/User_Images/@Model.user_picturepath" class="img-circle" width="180" height="220" /><br /><br />
+
+        </div>
+
+        <div class="col-md-9">
+            <h3>@(Model.user_name + " " + Model.user_surname)</h3>
+            <h4><span class="glyphicon glyphicon-star"></span> Test Master</h4>
+            <br />
+            <h5><b>Ad : </b>@Model.user_name</h5>
+            <h5><b>Soyad : </b>@Model.user_surname</h5>
+            <h5><b>E-Posta : </b>@Model.mail</h5>
+            <h5><b>Skor : </b>@Model.score</h5>
+            <h5><b>Kayıt Tarihi : </b>@Model.user_regdate.ToShortDateString()</h5>
+            <h5><b>Banka Hesabı : </b>@Model.bank_account</h5>
+            <br />
+
+        </div>
+
+
+    </div>
+</div>
+

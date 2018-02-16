@@ -1,0 +1,116 @@
+﻿@model TP.Entities.Device
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Cihaz Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="container-fluid">
+
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+            {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+            {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+            {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+            {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <h2><span class="glyphicon glyphicon-phone"></span> @ViewBag.Title</h2><hr />
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(false)
+                <div class="form-group">
+                    <div class="col-md-4 ">
+                        <img src="~/img/deviceadd.png" width="300" height="200" alt="Cihaz" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Model.Type.TypeId, "Cihaz Tipi", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BrandId, "Marka", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("BrandId", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ModelId, "Model", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("ModelId", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Model.OSId, "İşletim Sistemi", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("OSId", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Model.BrowserId, "Tarayıcı", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("BrowserId", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Oluştur" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-phone"></span> <span class="glyphicon glyphicon-chevron-down"></span> Mevcut Cihaz Bilgisi</h2><hr />
+            @{
+                Device Device = (Session["login"] as Tester).Device;
+                if (Device != null)
+                {
+
+
+                    <h5><b>Cihaz Tipi: </b>@Device.Model.Type.TypeName</h5>
+                        <h5><b>Marka: </b>@Device.Brand.BrandName</h5>
+                        <h5><b>Model: </b>@Device.Model.ModelName</h5>
+                        <h5><b>Kullanılan Tarayıcı: </b>@Device.Browser.BrowserName</h5>
+                        <h5><b>İşletim Sistemi: </b>@Device.OS.OSName</h5>
+                        @Bootstrap.LinkButton("/Home/DeleteTesterDevice/" + Device.DeviceId, "warning", "btn-md", "Sil", "trash", " Cihazı Kaldır")
+                }
+                else
+                {
+                    <h5><b>- Yok -</b></h5>
+                }
+
+            }
+
+        </div>
+                
+    </div>
+

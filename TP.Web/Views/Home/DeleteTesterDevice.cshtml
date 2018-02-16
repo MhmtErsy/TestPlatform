@@ -1,0 +1,57 @@
+﻿@model TP.Entities.Device
+
+@{
+    ViewBag.Title = "DeleteTesterDevice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Brand.BrandName @Model.Model.ModelName</h2>
+<hr />
+<div class="container-fluid">
+    <h3>Bu cihazı kaldırmak istediğinizden emin misiniz?</h3>
+    <div class="col-md-12">
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayName("Cihaz Tipi: ")
+            </dt>
+            <dd>
+                @Model.Model.Type.TypeName
+            </dd>
+            <dt>
+                @Html.DisplayName("Cihaz Markası: ")
+            </dt>
+            <dd>
+                @Model.Brand.BrandName
+            </dd>
+            <dt>
+                @Html.DisplayName("Cihaz Modeli: ")
+            </dt>
+            <dd>
+                @Model.Model.ModelName
+            </dd>
+            <dt>
+                @Html.DisplayName("Tarayıcı: ")
+            </dt>
+            <dd>
+                @Model.Browser.BrowserName
+            </dd>
+            <dt>
+                @Html.DisplayName("İşletim Sistemi: ")
+            </dt>
+            <dd>
+                @Model.OS.OSName
+            </dd>
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Kaldır" class="btn btn-danger btn-trash" /> 
+                @Bootstrap.LinkButton("/Home/CreateTesterDevice/", "warning", "btn-md", "Cihaz Sayfasına Dön", "arrow-left", " Cihaz Sayfasına Dön")
+            </div>
+        }
+    </div>
+</div>

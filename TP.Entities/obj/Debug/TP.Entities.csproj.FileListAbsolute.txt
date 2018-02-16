@@ -1,0 +1,6 @@
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\bin\Debug\TP.Entities.dll
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\bin\Debug\TP.Entities.pdb
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\obj\Debug\TP.Entities.csproj.CoreCompileInputs.cache
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\obj\Debug\TP.Entities.dll
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\obj\Debug\TP.Entities.pdb
+C:\Users\mehme\source\repos\TPSolution\TP.Entities\obj\Debug\TP.Entities.csprojResolveAssemblyReference.cache

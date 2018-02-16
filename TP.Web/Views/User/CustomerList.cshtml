@@ -1,0 +1,97 @@
+﻿@model IEnumerable<TP.Entities.Customer>
+@using TP.Entities
+@{
+    ViewBag.Title = "Müşteri Listesi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h3>Müşteri Listesi</h3>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.user_name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.user_surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.mail)
+                </th>
+                @if (Session["login"] is Admin)
+                {
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.password)
+                    </th>
+
+                    <th>
+                        @Html.DisplayName("Aktiflik durumu")
+                    </th>
+                }
+                <th>
+                    @Html.DisplayName("Kayıt tarihi")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mail)
+                    </td>
+                    @if (Session["login"] is Admin)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.password)
+                        </td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                @Html.DisplayName("Hesap Aktif")
+                            }
+                            else
+                            {
+                                @Html.DisplayName("Hesap Aktif Değil")
+                            }
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.user_regdate)
+                    </td>
+                    <td>
+                        @Bootstrap.LinkButton("/Job_Adv/LookCustomerProfile/" + item.UserId, "info", "btn-xs", "Profil", "user", " Profil")
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

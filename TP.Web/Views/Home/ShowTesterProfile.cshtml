@@ -1,0 +1,80 @@
+﻿@model TP.Entities.Tester
+@{
+    ViewBag.Title = "Profil";
+}
+
+
+<div class="container">
+
+    <div class="row">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-2">
+            <img src="~/Images/User_Images/@Model.user_picturepath" class="img-circle" width="180" height="220" /><br /><br />
+        </div>
+
+        <div class="col-md-8">
+            <h3>@(Model.user_name + " " + Model.user_surname)</h3>
+            <h4>@Model.rank.rank Tester</h4>
+            <br />
+            <h5><b>Ad : </b>@Model.user_name</h5>
+            <h5><b>Soyad : </b>@Model.user_surname</h5>
+            <h5><b>E-Posta : </b>@Model.mail</h5>
+            <h5><b>Kayıt Tarihi : </b>@Model.user_regdate.ToShortDateString()</h5>
+            <h5><b>Skor : </b>@Model.score</h5>
+            <h5><b>Ünvan : </b>@Model.rank.rank</h5>
+            <h5><b>Banka Hesabı : </b>@Model.bank_account</h5>
+            <h4><b>Cihaz Bilgileri:</b></h4><hr /><br />
+            
+            <h4><b><img src="~/img/deviceadd.png" height="150" width="200"/></b></h4><br />
+            @{
+               
+                if (Model.Device != null)
+                {
+                   
+
+                    <h5><b>Cihaz Tipi: </b>@Model.Device.Model.Type.TypeName</h5>
+                    <h5><b>Marka: </b>@Model.Device.Brand.BrandName</h5>
+                    <h5><b>Model: </b>@Model.Device.Model.ModelName</h5>
+                    <h5><b>Kullanılan Tarayıcı: </b>@Model.Device.Browser.BrowserName</h5>
+                    <h5><b>İşletim Sistemi: </b>@Model.Device.OS.OSName</h5>
+                }
+                else
+                {
+                    <h5><b>- Yok -</b></h5>
+                }
+            }
+            
+            <br />
+            
+        </div>
+        <div class="col-md-2 text-right">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-cog">&nbsp;</span>
+                    Seçenekler
+                    <span class="icon-cog icon-white"></span><span class="caret"></span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="@Url.Action("EditTesterProfile")">
+                            <span class="glyphicon glyphicon-edit">&nbsp;</span> Düzenle
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CreateTesterDevice")">
+                            <span class="glyphicon glyphicon-phone">&nbsp;</span> Cihaz Ekle
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+

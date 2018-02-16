@@ -1,0 +1,84 @@
+﻿@model List<TP.Entities.Job_Adv>
+@using TP.Entities
+@using TP.BusinessLayer.JobManagers
+
+@{
+    ViewBag.Title = "Görevler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10 col-md-pull-0">
+        <h2><span class="glyphicon glyphicon-briefcase"></span> @ViewBag.Title</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>
+                    @Html.DisplayName("Başlık")
+                </th>
+                <th>
+                    @Html.DisplayName("Müşteri")
+                </th>
+                <th>
+                    @Html.DisplayName("İşlemler")
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.job_adv_title)
+                    </td>
+                    <td>
+                        <b><a href="/Job_Adv/LookCustomerProfile/@item.adv_customer.UserId">@Html.DisplayName(item.adv_customer.user_name + " " + item.adv_customer.user_surname)</a></b>
+                    </td>
+                    <td>
+                        @if (Session["login"] is Test_Master)
+                        {
+                            TestJobManager TJM = new TestJobManager();
+                            
+                            @Bootstrap.LinkButton("/Job_Adv/Details/" + @item.JobAdvId, "warning", "btn-xs", "Detaylar", "info-sign", " Detaylar")
+
+                            TestJobManager tjm = new TestJobManager();
+                            Test_Job tj = tjm.Find(x => x.Job_Adv.JobAdvId == item.JobAdvId);
+                            if (tj == null)
+                            {
+                                @Bootstrap.LinkButton("/Test_Job/Create/" + item.JobAdvId, "info", "btn-xs", "Kullanım Senaryosu Oluştur", "book", " Kullanım Senaryosu Oluştur");
+                            }
+                            else
+                            {
+
+                                @Bootstrap.LinkButton("/Test_Job/EmployTesterForJob/" + item.JobAdvId, "success", "btn-xs", "Görevli Testerları Görüntüle", "user", " Görevli Testerları Görüntüle");
+
+                                @Bootstrap.LinkButton("/Test_Job/Details/" + item.JobAdvId, "info", "btn-xs", "Kullanım Senaryosunu Görüntüle", "book", " Kullanım Senaryosunu Görüntüle")
+                            }
+                           
+                           
+
+                        }
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

@@ -1,0 +1,251 @@
+﻿@using TP.Entities
+@using TP.BusinessLayer.RoleManagers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Test Platform</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="~/Content/shop-homepage.css" rel="stylesheet" />
+    <link href="~/Content/SideMenu.css" rel="stylesheet" />
+    <link href="~/Content/Notification.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    @if (Session["login"] is Tester)
+    { <style>        body {
+            background: url(/img/bg-tester2.jpg) no-repeat center center fixed;
+        } </style> }
+
+    @if (Session["login"] is Test_Master)
+    { <style>        body {
+            background: url(/img/bg-testmaster2.jpg) no-repeat center center fixed;
+        } </style> }
+
+    @if (Session["login"] is Admin)
+    { <style>        body {
+            background: url(/img/bg-admin.jpg) no-repeat center center fixed
+        }  </style> }
+
+    @if (Session["login"] is Customer)
+    { <style>        body {
+            background: url(/img/bg-customer.jpg) no-repeat center center fixed
+        } </style> }
+ 
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Menü</span>
+                </button>
+                <a class="navbar-brand" href="~/Home/Index">
+                    <span class="glyphicon glyphicon-check"></span>
+                    Test Platform
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/Home/About/"><span class="glyphicon glyphicon-info-sign"></span></a>
+                    </li>
+                    @{
+                        if (Session["login"] is Admin)
+                        {
+                            <li id="ypanel">
+                                <a href="#"><span class="glyphicon glyphicon-wrench"></span> Yönetim Paneli</a>
+                            </li>
+                            <li>
+                                <a href="/Home/TestMasterRegister"><span class="glyphicon glyphicon-user"></span>Test Master Kaydı</a>
+                            </li>
+                        }
+                    }
+                    
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    @{
+                        if (Session["login"] != null)
+                        {
+                            User user = HttpContext.Current.Session["login"] as User;
+                            string name = user.user_name + " " + user.user_surname;
+                            if (Session["login"] is Tester)
+                            {
+                                <li id="ksayfasi">
+                                    <a href="/Home/ShowTesterProfile/"><span class="glyphicon glyphicon-user"></span>@name</a>
+                                </li>
+                            }
+                            if (Session["login"] is Test_Master)
+                            {
+                                <li id="ksayfasi">
+                                    <a href="/Home/ShowTestMasterProfile/"><span class="glyphicon glyphicon-user"></span>@name</a>
+                                </li>
+                            }
+                            if (Session["login"] is Customer)
+                            {
+                                <li id="ksayfasi">
+                                    <a href="/Home/ShowCustomerProfile/"><span class="glyphicon glyphicon-user"></span>@name</a>
+                                </li>
+                            }
+                            if (Session["login"] is Admin)
+                            {
+                                <li id="ksayfasi">
+                                    <a href="/Home/ShowAdminProfile/"><span class="glyphicon glyphicon-user"></span>@name</a>
+                                </li>
+                            }
+
+                            <li id="ntf">
+                                <div class="dropdown">
+                                    <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+                                        @{ string ntcolor="grey";
+                                            if (user.notifications.Where(x => x.IsRead == true).FirstOrDefault() != null)
+                                            {
+                                                ntcolor = "#ff0000";
+                                            }
+                                            <i id="nicon" class="glyphicon glyphicon-bell" style="color:@ntcolor"></i>
+                                        }
+                                        
+                                    </a>
+
+                                    <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+
+                                        <div class="notification-heading">
+                                            <h4 class="menu-title">Bildirimler</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+                                        </div>
+                                        <li class="divider"></li>
+
+                                        <div class="notifications-wrapper">
+                                            @if (user.notifications != null)
+                                            {
+                                                IEnumerable<Notification> ntfreverse = user.notifications;
+                                                foreach (Notification n in ntfreverse.Reverse())
+                                                {
+                                                    <a class="content" href="@n.link">
+                                                        <div class="notification-item">
+                                                            <h4 class="item-title">@n.not_time.Value.ToShortDateString() - @n.not_time.Value.ToShortTimeString()</h4>
+                                                            <p class="item-info">@n.notification</p>
+                                                        </div>
+                                                    </a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a class="content" href="#">
+                                                    <div class="notification-item">
+                                                        <h4 class="item-title"></h4>
+                                                        <p class="item-info">Bildirim Yok..</p>
+                                                    </div>
+                                                </a>
+                                            }
+                                        </div>
+
+                                        <li class="divider"></li>
+                                        <div class="notification-footer"><h4 class="menu-title">Hepsini Göster<i class="glyphicon glyphicon-circle-arrow-right"></i></h4></div>
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li id="cikis">
+                                <a href="/Home/Logout"><span class="glyphicon glyphicon-log-out"></span>Çıkış</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/Home/TesterLogin"><span class="glyphicon glyphicon-log-in"></span> Tester Giriş</a>
+                            </li>
+                            <li>
+                                <a href="/Home/CustomerLogin"><span class="glyphicon glyphicon-log-in"></span> Müşteri Giriş</a>
+                            </li>
+                            <li>
+                                <a href="/Home/TestMasterLogin"><span class="glyphicon glyphicon-log-in"></span> Test Master Giriş</a>
+                            </li>
+                            <li>
+                                <a href="/Home/TesterRegister"><span class="glyphicon glyphicon-user"></span>Tester Kaydı</a>
+                            </li>
+                            <li>
+                                <a href="/Home/CustomerRegister"><span class="glyphicon glyphicon-user"></span>Müşteri Kaydı</a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+
+            </div>
+
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+   
+    @RenderBody()
+    @RenderSection("footer",required:false)
+
+</body>
+
+</html>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        
+
+
+        //$("#dLabel").click(function () {
+            
+        //    $.get("/Home/getNotifications/", function (data) {
+        //        console.log(data)
+        //        var res = JSON.parse(data)
+        //        console.log(res[0].notification);
+        //    });
+        //});
+    });
+    
+        @*$("#dLabel").click(function () {
+             @{
+                // string js;
+                 if (Session["login"] != null)
+                 {
+                     // User u = Session["login"] as User;
+                     if (Session["login"] is Tester)
+                     { TesterManager.ReturnNotTrue((User)Session["login"]); @Html.Raw("$('#nicon').css('style', 'color:gray');");}
+                     if (Session["login"] is Test_Master)
+                     { TestMasterManager.ReturnNotTrue((User)Session["login"]); @Html.Raw("$('#nicon').css('style', 'color:gray');");}
+                     if (Session["login"] is Customer)
+                     { CustomerManager.ReturnNotTrue((User)Session["login"]); @Html.Raw("$('#nicon').css('style', 'color:gray');");}
+                     if (Session["login"] is Admin)
+                     { AdminManager.ReturnNotTrue((User)Session["login"]);@Html.Raw("$('#nicon').css('style', 'color:gray');"); }
+
+                     //((User)Session["login"]).notifications.ForEach(x => x.IsRead = true);
+                     //js = "$('#nicon').css('style', 'color:gray');";
+                 }
+                 else
+                 {
+                     @Html.Raw("$('#nicon').css('style', '#ff0000');");
+                    // js= "$('#nicon').css('style', '#ff0000');";
+                 }
+
+             }
+
+         });*@
+</script>

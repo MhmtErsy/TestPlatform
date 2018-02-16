@@ -1,0 +1,177 @@
+﻿@model TP.Entities.Test_Job
+@using TP.BusinessLayer.JobManagers
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Kullanım Senaryosu ve Görevliler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2>@ViewBag.Title</h2>
+        <h2><b>@Model.Job_Adv.job_adv_title</b></h2>
+        <hr />
+        <p>
+            @{ JobAdvManager jm = new JobAdvManager(); TestJobManager tjm = new TestJobManager();
+            }
+            @Bootstrap.LinkButton("/Job_Adv/Details/" + Model.JobAdvId, "info", "btn-md", "Listeye Dön", "arrow-left", " İlana Dön")
+
+            @if (Session["login"] is Tester && Model.job_testers.Where(x => x.UserId == (Session["login"] as Tester).UserId).FirstOrDefault() != null && Model.job_answers.Where(x => x.tester == (Session["login"] as Tester)).FirstOrDefault() == null)
+            {
+                @Bootstrap.LinkButton("/Job_Ans/Create/" + Model.TestJobID, "warning", "btn-md", "Düzenle", "edit", " Kullanım Senaryosunu Cevaplandır")
+            }
+            @if (Model.job_answers.Where(x => x.tester == (Session["login"] as Tester)).FirstOrDefault() != null)
+            {
+                @Bootstrap.LinkButton("/Job_Ans/Details/" + Model.TestJobID, "default", "btn-md", "Kullanım Senaryosu Cevabımı Göster", "bullhorn", " Kullanım Senaryosu Cevabımı Göster")
+            }
+
+            @if (Session["login"] is Test_Master && Model.job_test_master.UserId == (Session["login"] as Test_Master).UserId || Session["login"] is Admin)
+            {
+                if (!(Session["login"] is Admin))
+                {
+                    @Bootstrap.LinkButton("/Job_Ans/Create/" + Model.JobAdvId, "warning", "btn-md", "Düzenle", "edit", " Düzenle")
+                }
+                @Bootstrap.LinkButton("/Job_Ans/ListAnswers/" + Model.JobAdvId, "warning", "btn-md", "Cevapları Görüntüle", "copy", " Cevapları Görüntüle")
+
+            }
+
+
+        </p>
+        <dl class="dl-horizontal">
+            <dt>
+
+            </dt>
+
+            <dd>
+                @if (Model.Job_Adv.adv_picturepath != null)
+                {
+                    <img src="/Images/Adv_Images/@Model.Job_Adv.adv_picturepath" alt="@Model.Job_Adv.job_adv_title" style="height:500px;width:800px" class="form-control"><br />
+                }
+                else
+                {
+                    <img src="~/Images/Adv_Images/adv_def.jpg" alt="@Model.Job_Adv.job_adv_title" style="height:400px;width:400px" class="form-control"><br />
+                }
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.test_job_title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.test_job_title)
+            </dd>
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.description)
+            </dt>
+
+            <dd>
+                @Html.TextAreaFor(model => model.description, 20, 30, new { @class = "form-control", @readonly = "readonly", @style = "resize:none" })
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.start_date)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.start_date)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.finish_date)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.finish_date)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.review_date)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.review_date)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.tester_limit)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tester_limit)
+            </dd>
+
+            <dt>
+                @Html.DisplayText("Kalan Tester Limiti: ")
+            </dt>
+
+            <dd>
+                @Html.DisplayText((Model.job_testers.Count - Model.tester_limit).ToString())
+            </dd>
+
+            <dt>
+                @Html.DisplayName("Görevli Testerlar")
+            </dt>
+            @if (Model.job_testers != null)
+            {
+                foreach (var item in Model.job_testers)
+                {
+                    if (item != null)
+                    {
+                        <dd>
+                            <a href="/Test_Job/LookTesterProfile/@item.UserId">@Html.DisplayName(item.user_name + " " + item.user_surname)</a>
+                        </dd>
+                    }
+                }
+            }
+            else
+            {
+                <dd>
+                    @Html.DisplayText(" - ")
+                </dd>
+            }
+
+
+        </dl>
+        <p>
+
+        </p>
+
+
+
+
+    </div>
+</div>

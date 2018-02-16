@@ -1,0 +1,67 @@
+﻿@model IEnumerable<TP.Entities.Payment>
+@using TP.Entities
+@{
+    ViewBag.Title = "Ödemelerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2>@ViewBag.Title</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Customer")
+                </th>
+                <th>
+                    @Html.DisplayName("Görev")
+                </th>
+                <th>
+                    @Html.DisplayName("Miktar (₺)")
+                </th>
+                <th>
+                    @Html.DisplayName("Kazanılan Tarih")
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="/Job_Adv/LookCustomerProfile/@item.Job_Adv.adv_customer.UserId">@Html.DisplayName(item.Job_Adv.adv_customer.user_name + " " + item.Job_Adv.adv_customer.user_surname)</a>
+                    </td>
+                    <td>
+                        <a href="/Job_Adv/Details/@item.JobAdvId">    @Html.DisplayFor(modelItem => item.Job_Adv.job_adv_title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.payDate)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+

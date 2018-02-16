@@ -1,0 +1,124 @@
+﻿@model TP.Entities.Job_Ans
+@using TP.Entities
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h1>Detay</h1>
+        @if (Session["login"] is Test_Master)
+        {
+            @Bootstrap.LinkButton("/Job_Ans/ListAnswers/" + Model.test_job.JobAdvId, "info", "btn-md", "Düzenle", "arrow-left", " Cevaplara git")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Bootstrap.LinkButton("/Test_Job/Details/" + Model.test_job.JobAdvId, "info", "btn-md", "Düzenle", "arrow-left", " Kullanım senaryosuna git")
+        }
+        <hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model=>model.ans_desc)
+            @Html.HiddenFor(model => model.ans_screenshot)
+            @Html.HiddenFor(model => model.ans_title)
+            @Html.HiddenFor(model => model.isSubmitted)
+            @Html.HiddenFor(model => model.JobAnsId)
+            @Html.HiddenFor(model => model.ModifiedTime)
+            @Html.HiddenFor(model => model.State)
+            @Html.HiddenFor(model => model.SubmitTime)
+            @Html.HiddenFor(model => model.tester.UserId)
+            @Html.HiddenFor(model => model.test_job.TestJobID)
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.ans_title)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.ans_title)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ans_desc)
+                </dt>
+
+                <dd>
+                    @Html.TextAreaFor(model => model.ans_desc, 20, 30, htmlAttributes: new { @class = "form-control", @style = "resize:none",@readonly="readonly" })
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.State)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.State)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SubmitTime)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.SubmitTime)
+                </dd>
+                <dt>
+                    @Html.DisplayName("Onay Durumu")
+                </dt>
+                <dd>
+                    @if (Model.conf)
+                    {
+                        <b style="color:red">   @Html.DisplayName("Onaylandı")</b>
+                    }
+                    else
+                    {
+                        <b style="color:red">   @Html.DisplayName("Onaylanmadı")</b>
+                    }
+                </dd>
+            </dl>
+
+            if (Session["login"] is Test_Master && Model.test_job.job_test_master.UserId == (Session["login"] as Test_Master).UserId)
+            {
+            <div class="form-group">
+                @Html.LabelFor(model => model.conf, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.CheckBoxFor(model => model.conf, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.conf, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            }
+
+            if (Session["login"] is Tester && Model.isSubmitted != true)
+            {
+                @Bootstrap.LinkButton("/Job_Ans/Edit/" + Model.test_job.TestJobID, "warning", "btn-md", "Düzenle", "copy", " Düzenle")
+            }
+            if (Session["login"] is Test_Master && Model.test_job.job_test_master.UserId == (Session["login"] as Test_Master).UserId)
+            {
+                <button type="submit" class="btn btn-md btn-success">Onayla</button>
+            }
+
+        }
+
+    </div>
+</div>
+<p>
+
+
+</p>

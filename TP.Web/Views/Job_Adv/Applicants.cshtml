@@ -1,0 +1,94 @@
+﻿@model TP.BusinessLayer.JobManagers.SelectAdvTestMasterViewModel
+    @using TP.Entities
+
+@{
+    ViewBag.Title = "Başvurular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+<div class="col-md-10">
+    <h2>Başvurular</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Adv_Id)
+        <div class="form-horizontal">
+            @Html.ValidationSummary(false)
+
+
+            <div class="col-md-8">
+                <table class="table table-hover">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Başvuru Sahibi")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Skoru")
+                        </th>
+                        <th>
+                            @Html.DisplayName("İşlem")
+                        </th>
+                    </tr>
+                    @if (Model.testMasters != null)
+                    {
+                        foreach (var item in Model.testMasters)
+                    {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.user_name + " " + item.user_surname, "/LookTestMasterProfile/" + @item.UserId)
+                                </td>
+                                <td>
+                                    @Html.Label(item.score.ToString())
+                                </td>
+                                <td>
+                                    @Html.RadioButtonFor(m => m.selectedTestMasterId, item.UserId, new { id = "rd", isim = item.user_name + " " + item.user_surname })
+                                </td>
+                            </tr>
+                        }
+                    }
+                    
+                </table>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="submit" value="Atama Yap" id="btnAtama" class="btn btn-lg btn-success" />
+                </div>
+            </div>
+
+        </div>
+    }
+
+ 
+    </div>
+</div>
+<script>
+    $(function () {
+        $("input[id='rd']").change(function () {
+            if ($(this).is(':checked')) {
+                $("#btnAtama").val("Atama Yap"+" ("+$(this).attr('isim')+")")
+            }
+        });
+    });
+</script>

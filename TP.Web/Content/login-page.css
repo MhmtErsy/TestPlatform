@@ -1,0 +1,29 @@
+﻿body {
+    
+    background: url('../img/login-bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.validation-summary-errors {
+    color: #00d6ff;
+    font-family: Tahoma;
+    font-weight: bold;
+}
+.panel-default {
+    opacity: 0.9;
+    margin-top: 30px;
+    width: 500px;
+}
+
+.form-group.last {
+    margin-bottom: 0px;
+}
+.panel-body {
+    margin-top: 40px;
+    margin-left: -25px;
+}
+.panel-footer {
+    margin-top: 20px;
+}

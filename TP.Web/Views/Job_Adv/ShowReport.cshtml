@@ -1,0 +1,130 @@
+﻿@model TP.Entities.ValueObjects.ReportViewModel
+@using TP.Entities
+@{
+    ViewBag.Title = "ShowReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/material-switch-element.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h3>@Model.Report.Test_Job.test_job_title | Rapor</h3>
+        <h4>@Model.Report.report_title</h4>
+        <hr />
+        @if (Session["login"] is Test_Master)
+        {
+
+            @Bootstrap.LinkButton("/Job_Ans/ListAnswers/" + Model.Report.TestJobID, "info", "btn-md", "Cevaplara Git", "arrow-left", " Cevaplara Git")
+            if (Model.confirmation == false)
+            {
+                @Bootstrap.LinkButton("/Job_Adv/EditReport/" + Model.Report.TestJobID, "warning", "btn-md", "Düzenle", "edit", " Düzenle")
+            }
+        }
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.ReportID)
+            @Html.HiddenFor(model => model.Job_AdvID)
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Report.Test_Job.Job_Adv.job_adv_title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Report.Test_Job.Job_Adv.job_adv_title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Report.Test_Job.test_job_title)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Report.Test_Job.test_job_title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Report.report_title)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Report.report_title)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.confirmation)
+                </dt>
+                <dd>
+                    @if (Model.confirmation)
+                    {
+                        <b style="color:red">
+
+                            @Html.DisplayName("Onaylandı")
+                        </b>
+                    }
+                    else
+                    {
+                        @Html.DisplayName("Onaylanmadı")
+                    }
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Report.report)
+                </dt>
+
+                <dd>
+                    @Html.TextAreaFor(model => model.Report.report, 20, 30, new { @class = "form-control", @readonly = "readonly", @style = "resize:none" })
+                    <br />
+                </dd>
+                @if (Session["login"] is Customer && Model.confirmation==false)
+                {
+                    <dt>
+                        @Html.LabelFor(model => model.confirmation, new { @class = "control-label col-md-1" })
+                    </dt>
+                    <dd>
+                        @Html.EditorFor(model => model.confirmation,
+                                    new { @class = "label-success", dependentControlId = nameof(Model.confirmation) })
+                        <br />
+                    </dd>
+                    <dt>
+
+                    </dt>
+                    <dd>
+                       <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span> Onayla</button> <b>  (Bu işlem geri alınamaz!)</b>
+                    </dd>
+                }
+            </dl>
+        }
+
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $(".material-switch").keydown(function (event) {
+
+            // Klavyenizden 32 : space , 39 : right arrow , 37 : left arrow tuşlarına basıldığında
+            // çalışması sağlanır. Böylece klavye desteği gelir.
+
+            if (event.keyCode == 32 || event.keyCode == 39 || event.keyCode == 37) {
+                var checked = $(this).parent().find("input:checkbox").prop('checked');
+                $(this).parent().find("input:checkbox").prop('checked', !checked);
+            }
+
+        });
+
+    });
+</script>

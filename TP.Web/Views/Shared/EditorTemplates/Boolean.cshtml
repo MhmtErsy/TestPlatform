@@ -1,0 +1,15 @@
+﻿
+@model bool?
+
+@* "Views/Shared/EditorTemplates/Boolean.cshtml" konumunda ve dosya isminde oluşturulması gerekiyor.
+    Böylece Modeliniz ile EditorFor kullandığınız yerlerde otomatik kullanılır.  *@
+
+<div class="material-switch">
+    @Html.CheckBox("", Model.HasValue ? Model.Value : false, new
+{
+    data_dependent_control_id =
+          ViewData.ContainsKey("dependentControlId") ? ViewData["dependentControlId"] : ""
+})
+    @Html.LabelFor(x => x, " ", new { @class = ViewData.ContainsKey("class") ? ViewData["class"] : "label-default", tabindex = "0" })
+</div>
+

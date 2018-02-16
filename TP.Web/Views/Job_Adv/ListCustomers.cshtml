@@ -1,0 +1,37 @@
+﻿@model List<TP.Entities.Customer>
+
+@{
+    ViewBag.Title = "ListCustomers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Müşteriler</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            
+            @Html.DisplayName("Müşteri Adı")
+        </th>
+        <th>
+            @Html.DisplayName("Kayıt Tarihi")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <a href="#">@Html.DisplayName(item.user_name + " " + item.user_surname)</a>  
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_regdate)
+        </td>
+        <td>
+            @Html.ActionLink("/Job_Adv/LookCustomerProfile/", "Profili Görüntüle", new {  id=item.UserId  }) |
+        </td>
+    </tr>
+}
+
+</table>

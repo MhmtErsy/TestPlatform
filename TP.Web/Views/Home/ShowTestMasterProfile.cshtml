@@ -1,0 +1,54 @@
+﻿@using TP.Entities
+@model Test_Master
+@{
+    ViewBag.Title = "Profil";
+}
+
+
+<div class="container">
+
+
+        <h2>@ViewBag.Title</h2>
+        <hr />
+        <div class="col-md-3">
+            <img src="~/Images/User_Images/@Model.user_picturepath" class="img-circle" width="180" height="220" /><br /><br />
+        </div>
+
+        <div class="col-md-7">
+            <h3>@(Model.user_name + " " + Model.user_surname)</h3>
+            <h4><span class="glyphicon glyphicon-star"></span> Test Master</h4>
+            <br />
+            <h5><b>Ad : </b>@Model.user_name</h5>
+            <h5><b>Soyad : </b>@Model.user_surname</h5>
+            <h5><b>E-Posta : </b>@Model.mail</h5>
+            <h5><b>Kayıt Tarihi : </b>@Model.user_regdate.ToShortDateString()</h5>
+            <h5><b>Banka Hesabı : </b>@Model.bank_account</h5>
+
+            <br />
+            <h5><a href="#">Dahası... </a></h5>
+        </div>
+        <div class="col-md-2 text-right">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-cog">&nbsp;</span>
+                    Seçenekler
+                    <span class="icon-cog icon-white"></span><span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="@Url.Action("EditTestMasterProfile")">
+                            <span class="glyphicon glyphicon-edit">&nbsp;</span> Düzenle
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("DeleteProfile")" onclick="return confirm('Bu hesabı silmek istediğinizden emin misiniz?');">
+                            <span class="glyphicon glyphicon-trash">&nbsp;</span> Sil
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+</div>
+

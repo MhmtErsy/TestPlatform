@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TP.Entities.Test_Job>
+
+@{
+    ViewBag.Title = "Atanılan Kullanım Senaryoları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MyTestJobs</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.test_job_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.test_job_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.start_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.finish_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.review_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <a href="/Job_Adv/Details/@item.JobAdvId"> @Html.DisplayFor(modelItem => item.Job_Adv.job_adv_title)</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.test_job_title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.finish_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.review_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)
+        </td>
+        <td>
+            @Html.ActionLink("Detaylar", "Detaylar", new { /* id=item.PrimaryKey */ }) |
+        </td>
+    </tr>
+}
+
+</table>

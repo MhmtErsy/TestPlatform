@@ -1,0 +1,119 @@
+﻿@using TP.Entities
+@model List<Job_Adv>
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Page Content -->
+<div class="container-fluid">
+        <div class="col-md-3">
+            @if (Session["login"] != null)
+            {
+                if (Session["login"] is Test_Master)
+                {
+                    @Html.Partial("_PartialTestMasterSideNav")
+                }
+                if (Session["login"] is Tester)
+                {
+                    @Html.Partial("_PartialTesterSideNav")
+                }
+                if (Session["login"] is Customer)
+                {
+                    @Html.Partial("_PartialCustomerSideNav")
+                }
+                if (Session["login"] is Admin)
+                {
+                    @Html.Partial("_PartialAdminSideNav")
+                }
+            }
+        </div>
+        <div class="col-md-9 col-md-pull-1">
+            @if (Session["login"] != null)
+            {
+              
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Başlık")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Yayın Tarihi")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Ücret (TL)")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Müşteri")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Skor Puanı")
+                            </th>
+                            <th>
+                                @Html.DisplayName("İşlemler")
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model.Where(x => x.isPublished && x.SelectedTestMaster == null))
+                    {
+                        <tr>
+                            <td>
+                                <a href="/Job_Adv/Details/@item.JobAdvId">@Html.DisplayFor(modelItem => item.job_adv_title)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.publishDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.price)
+                            </td>
+                            <td>
+                                <a href="/Job_Adv/LookCustomerProfile/@item.adv_customer.UserId"> @Html.DisplayName(item.adv_customer.user_name + " " + item.adv_customer.user_surname) </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.awardScoreValue)
+                            </td>
+                            <td>
+
+                                @if (item.adv_customer == (Session["login"] as Customer))
+                                {
+                                    @Bootstrap.LinkButton("/Job_Adv/Edit/" + @item.JobAdvId, "warning", "btn-xs", "Düzenle", "edit", " Düzenle")
+                                    @Bootstrap.LinkButton("/Job_Adv/Delete/" + @item.JobAdvId, "danger", "btn-xs", "Kaldır", "trash", " Kaldır")
+                                }
+                                @Bootstrap.LinkButton("/Job_Adv/Details/" + @item.JobAdvId, "info", "btn-xs", "Detaylar", "info-sign", "Detaylar")
+
+                                @if (Session["login"] is Admin)
+                                {
+                                    @Bootstrap.LinkButton("/Job_Adv/PublishAdv/" + @item.JobAdvId, "warning", "btn-xs", "Yayın Durumu", "send", "Yayın Durumu")
+                                }
+                                @if (Session["login"] is Test_Master)
+                                {
+                                    if (item.SelectedTestMaster == null)
+                                    {
+
+                                        if (item.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() == null)
+                                        {
+                                            @Bootstrap.LinkButton("/Job_Adv/Apply/" + @item.JobAdvId, "info", "btn-xs", "Başvuru", "leaf", "Başvuru Yap");
+                            }
+
+                            if (item.Applicants.Where(x => x.Test_Master == (Session["login"] as Test_Master)).FirstOrDefault() != null)
+                            {
+                                            @Bootstrap.LinkButton("/Job_Adv/ApplyCancel/" + @item.JobAdvId, "warning", "btn-xs", "Başvuru İptal", "leaf", "Başvuruyu İptal Et");
+                                        }
+
+                                    }
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        </div>
+    </div>
+
+@section footer{
+    @Html.Partial("_PartialFooter")
+}
+

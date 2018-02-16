@@ -1,0 +1,103 @@
+﻿@model TP.Entities.ValueObjects.JobViewModels.JobAdvEditViewModel
+@using TP.Entities
+@{
+    ViewBag.Title = "PublishAdv";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/material-switch-element.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h3>@Model.adv_title İlanının Yayın Durumu </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(false)
+                @Html.HiddenFor(x => x.adv_title)
+                @Html.HiddenFor(x => x.adv_desc)
+                @Html.HiddenFor(x => x.adv_picturepath)
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.AwardScoreValue)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @if (Model.adv_publishdate != null)
+                                {
+                                    @Html.Display(Model.adv_publishdate.ToShortDateString(), new { htmlAttributes = new { @class = "form-control" } })
+                                }
+                                else
+                                {
+                                    @Html.Display(" - ", new { htmlAttributes = new { @class = "form-control" } })
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.adv_ispublished, new { @class = "control-label col-md-1" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.adv_ispublished,
+                                    new { @class = "label-success", dependentControlId = nameof(Model.adv_ispublished) })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span> Güncelle</button>
+                 
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Bootstrap.LinkButton("/Job_Adv/Index/", "default", "btn-md", "Listeye Git", "arrow-left", " İlanlara Dön")
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $(".material-switch").keydown(function (event) {
+
+            // Klavyenizden 32 : space , 39 : right arrow , 37 : left arrow tuşlarına basıldığında
+            // çalışması sağlanır. Böylece klavye desteği gelir.
+
+            if (event.keyCode == 32 || event.keyCode == 39 || event.keyCode == 37) {
+                var checked = $(this).parent().find("input:checkbox").prop('checked');
+                $(this).parent().find("input:checkbox").prop('checked', !checked);
+            }
+
+        });
+
+    });
+</script>

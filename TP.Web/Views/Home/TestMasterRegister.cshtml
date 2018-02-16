@@ -1,0 +1,114 @@
+﻿@using TP.Entities.ValueObjects.UserViewModels
+@model TestMasterRegisterViewModel
+@{
+    ViewBag.Title = "Test Platform - Test Master Kayıt Sayfası";
+}
+<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet'
+      type='text/css' />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300,800'
+      rel='stylesheet' type='text/css' />
+<!-- ============ Add custom CSS here ============ -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/cstyle.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<style>
+    #banner {
+        background-image: url('../img/testmaster-bg.png');
+    }
+</style>
+
+<div class="container">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+        <div id="banner">
+            <h1><strong>Test Master Kayıt Sayfası</strong> </h1>
+            <h5><strong>testplatform.com</strong></h5><br />
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <div class="registrationform">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>Test Master Kayıt Formu <i class="fa fa-pencil pull-right"></i></legend>
+                        @Html.ValidationSummary(false)<br />
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label">
+                                Ad
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.user_name, new { @class = "form-control", placeholder = "Ad", required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSurname" class="col-lg-2 control-label">
+                                Soyad
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.user_surname, new { @class = "form-control", placeholder = "Soyad", required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-lg-2 control-label">
+                                Email
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.mail, new { @class = "form-control", placeholder = "E-Mail", required = "required" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="col-lg-2 control-label">
+                                Parola
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.password, new { @class = "form-control", placeholder = "Parola", required = "required", type = "password" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputRePassword" class="col-lg-2 control-label">
+                                Parola Tekrar
+                            </label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(model => model.Repassword, new { @class = "form-control", placeholder = "Tekrar Parola", required = "required", type = "password" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Kaydet
+                                </button>
+                                <button type="reset" class="btn btn-warning">
+                                    Reset
+                                </button><br />
+                                
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+@section footer{
+    @Html.Partial("_PartialFooter")
+}
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-3.1.1.js"></script>
+<script src="~/Scripts/jquery.backstretch.js"></script>
+<script type="text/javascript">
+            'use strict';
+           $.backstretch(
+        [
+            "/img/44.jpg",
+            "/img/colorful.jpg",
+            "/img/34.jpg",
+            "/img/images.jpg"
+        ],
+
+        {
+            duration: 4500,
+            fade: 1500
+        }
+    );
+</script>
+

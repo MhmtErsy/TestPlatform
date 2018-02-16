@@ -1,0 +1,80 @@
+﻿@using TP.Web
+@model TP.Entities.Admin
+
+@{
+    ViewBag.Title = "Kullanıcı Düzenle";
+}
+
+<link href="~/Content/validation-summary.css" rel="stylesheet" />
+<link href="~/Content/style.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h2>@ViewBag.Title</h2>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            @using (Html.BeginForm("EditAdminProfile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="registrationform">
+                    <fieldset>
+                        @Html.ValidationSummary(false)
+                        @Html.HiddenFor(model => model.UserId)
+                        <div class="form-horizontal">
+                            <div class="col-md-3">
+                                <img src="~/Images/User_Images/@Model.user_picturepath" class="img-circle" width="180" height="220" /><br /><br />
+                                <input type="file" name="ProfileImage" id="ProfileImage" class="form-control" />
+                                <span class="glyphicon glyphicon-info-sign">&nbsp;</span>
+                                <span><i>Lütfen jpg,jpeg ya da png formatı kullanın.</i></span>
+                            </div>
+                            <div class="col-md-9">
+                                <h4>@Model.user_name @Model.user_surname - <span class="glyphicon glyphicon-star"></span> Yönetici <br /><br /> Kayıt Tarihi :@Model.user_regdate.ToShortDateString()</h4>
+                                <hr />
+                                
+                                <div class="form-group">
+                                    <bold></bold>
+                                    @Html.Label("Ad :", htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.user_name, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("Soyad :", htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.user_surname, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("E-Posta :", htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.mail, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("Parola :", htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Kaydet" class="btn btn-success btn-lg" />
+                                        @Html.ActionLink("İptal", "ShowAdminProfile", "Home", null, new { @class = "btn btn-default btn-lg" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

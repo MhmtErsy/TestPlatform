@@ -1,0 +1,89 @@
+﻿@model TP.Entities.Test_Job
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kullanım Senaryosu kaldırma</h2>
+
+<h3>Silmek istediğinizden emin misiniz?</h3>
+<div>
+    <h4>@Model.test_job_title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Job_Adv.job_adv_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Job_Adv.job_adv_title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.test_job_title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.test_job_title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.start_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.start_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.finish_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.finish_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.review_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.review_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tester_limit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tester_limit)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,103 @@
+﻿@model List<Job_Adv>
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Devam Edenler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+    <div class="col-md-10">
+        <h2><span class="glyphicon glyphicon-flag"></span> @ViewBag.Title</h2>
+        <hr />
+
+        <table class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Başlık")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Yayın Tarihi:")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Ücret (TL)")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Müşteri:")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Skor Puanı")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Müşteri Onayı")
+                    </th>
+                    <th>
+                        @Html.DisplayName("İşlemler:")
+                    </th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="/Job_Adv/Details/@item.JobAdvId">@Html.DisplayFor(modelItem => item.job_adv_title)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.publishDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(m => item.price)
+                    </td>
+                    <td>
+                        <a href="/Job_Adv/LookCustomerProfile/@item.adv_customer.UserId"> @Html.DisplayName(item.adv_customer.user_name + " " + item.adv_customer.user_surname) </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.awardScoreValue)
+                    </td>
+                    <td>
+                        @if (item.confirmation)
+                        {
+                            <b style="color:red">  @Html.DisplayName("Onaylandı")</b>
+                        }
+                        else
+                        {
+                             @Html.DisplayName("Onaylanmadı")
+                        }
+                    </td>
+                    <td>
+
+                        @Bootstrap.LinkButton("/Job_Adv/Delete/" + @item.JobAdvId, "danger", "btn-xs", "Kaldır", "trash", " Kaldır")
+                        @Bootstrap.LinkButton("/Job_Adv/Details/" + @item.JobAdvId, "info", "btn-xs", "Detaylar", "info-sign", " Detaylar")
+
+                        @if (Session["login"] is Admin)
+                        {
+                            @Bootstrap.LinkButton("/Job_Adv/PublishAdv/" + @item.JobAdvId, "success", "btn-xs", "Yayın Durumu", "send", " Yayın Durumu")
+                        }
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

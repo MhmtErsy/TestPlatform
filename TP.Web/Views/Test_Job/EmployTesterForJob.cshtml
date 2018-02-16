@@ -1,0 +1,121 @@
+﻿@model TP.BusinessLayer.JobManagers.SelectTestJobTesterViewModel
+@using TP.Entities
+
+@{
+    ViewBag.Title = "Tester Atama";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="col-md-2">
+        @if (Session["login"] is Test_Master)
+        {
+            @Html.Partial("_PartialTestMasterSideNav")
+        }
+        @if (Session["login"] is Tester)
+        {
+            @Html.Partial("_PartialTesterSideNav")
+        }
+        @if (Session["login"] is Customer)
+        {
+            @Html.Partial("_PartialCustomerSideNav")
+        }
+        @if (Session["login"] is Admin)
+        {
+            @Html.Partial("_PartialAdminSideNav")
+        }
+    </div>
+
+    <div class="col-md-10">
+        <h2>@Model.Test_job.test_job_title | Tester Görevlendirme</h2>
+        <h3>Bu Kullanım Senaryosu için kalan tester limiti: <b> @Model.limit / @Model.Remaining</b></h3><br />
+        <div class="progress">
+            @{ int prg = 100 * Model.Remaining / Model.limit;
+            prg = 100 - prg;
+            string val = prg + "%";
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@prg.ToString()" aria-valuemin="0" aria-valuemax="100" style="width: @val">
+                   
+                </div>        }
+        </div><div class="col-md-5">
+
+            <h4><b>Atanan Testerlar</b></h4><hr />
+
+            <table class="table table-condensed">
+                <tr>
+                    <th>@Html.DisplayName("İsim")</th>
+                    <th>@Html.DisplayName("Rütbe")</th>
+                </tr>
+                @foreach (var item in Model.jobtesters)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(item.user_name + " " + item.user_surname, "LookTesterProfile/" + @item.UserId)</td>
+                        <td>@item.rank.rank</td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Adv_Id)
+            <div class="form-horizontal">
+                @Html.ValidationSummary(false)
+                <div class="col-md-8">
+                    <h4><b>Hazır Testerlar</b></h4><hr />
+                    <table class="table table-hover">
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Tester")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Skoru")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Seçim")
+                            </th>
+                        </tr>
+
+                        @foreach (var item in Model.Testers)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(item.user_name + " " + item.user_surname, "LookTesterProfile/" + @item.UserId)
+
+                                </td>
+                                <td>
+                                    @Html.Label(item.score.ToString())
+                                </td>
+                                <td>
+                                    @Html.RadioButtonFor(m => m.selectedTesterId, item.UserId, new { id = "rd", isim = item.user_name + " " + item.user_surname })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @if (Model.Testers.Count!=0)
+                        {
+
+                            <input type="submit" value="Atama Yap" id="btnAtama" class="btn btn-success" />
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        $("input[id='rd']").change(function () {
+            if ($(this).is(':checked')) {
+                $("#btnAtama").val("Atama Yap" + " (" + $(this).attr('isim') + ")")
+            }
+        });
+    });
+</script>
